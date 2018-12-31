@@ -2,7 +2,7 @@
 This project is for converting mouse and keyboard input to a gamepad output.  The project is tailored toward playing PS3 games with a mouse and keyboard.
 
 # Video
-[![Video](https://i.ytimg.com/vi/E7YJm7XsTjs/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLBaRyN_mt21ozxYtTNK2-raNsOy1Q)](https://www.youtube.com/watch?v=E7YJm7XsTjs&t=1s)
+[![Video](https://i.ytimg.com/vi/E7YJm7XsTjs/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLBaRyN_mt21ozxYtTNK2-raNsOy1Q)](https://youtu.be/E7YJm7XsTjs)
 
 # Setup
 Required Components:
