@@ -12,10 +12,10 @@
 #define PS3_Cir     'c'
 
 // D-Pad
-#define PS3_DU       '1'
-#define PS3_DD       '2'
-#define PS3_DL       '3'
-#define PS3_DR       '4'
+#define PS3_DUp      '1'
+#define PS3_DDown    '2'
+#define PS3_DLeft    '3'
+#define PS3_DRight   '4'
 
 // Left Joystick
 #define PS3_LJoyU    'w'
@@ -36,6 +36,7 @@
 #define PS3_Sel      'h'
 
 // Button mappings to PS3 Keys
+// The button numbers that correspond to each PS3 button
 #define PS3_XMap     1
 #define PS3_SqrMap   0
 #define PS3_TriMap   3
@@ -57,6 +58,7 @@ KbdParser::KbdParser(Joystick_* j)
 
 void KbdParser::PrintKey(uint8_t m, uint8_t key)
 {
+  // Prints the keyboard press with any moddifiers such as Ctrl
   MODIFIERKEYS mod;
   *((uint8_t*)&mod) = m;
   Serial.print((mod.bmLeftCtrl   == 1) ? "C" : " ");
@@ -76,6 +78,7 @@ void KbdParser::PrintKey(uint8_t m, uint8_t key)
 
 void KbdParser::OnKeyDown(uint8_t mod, uint8_t key)
 {
+  // Prints output of keyboard press and executes corresponding gamepad output
   Serial.print("DN ");
   PrintKey(mod, key);
   uint8_t c = OemToAscii(mod, key);
@@ -83,11 +86,13 @@ void KbdParser::OnKeyDown(uint8_t mod, uint8_t key)
   if (c)
     OnKeyPressed(c);
 
-  char k = char(tolower((char)c));
+  char k = char(tolower((char)c)); // Convert all alphabet keys to lowercase
   GamepadKeyDown(k);
 }
 
 void KbdParser::OnControlKeysChanged(uint8_t before, uint8_t after) {
+  // Used for control keys like Shift
+  // Prints key and updates gamepad accordingly
 
   MODIFIERKEYS beforeMod;
   *((uint8_t*)&beforeMod) = before;
@@ -129,6 +134,7 @@ void KbdParser::OnControlKeysChanged(uint8_t before, uint8_t after) {
 
 void KbdParser::OnKeyUp(uint8_t mod, uint8_t key)
 {
+  // Prints the key and updates the gamepad for the release of a button
   Serial.print("UP ");
   PrintKey(mod, key);
   uint8_t c = OemToAscii(mod, key);
@@ -138,68 +144,62 @@ void KbdParser::OnKeyUp(uint8_t mod, uint8_t key)
 
 void KbdParser::OnKeyPressed(uint8_t key)
 {
+  // Prints the key
   Serial.print("ASCII: ");
   Serial.println((char)key);
 }
 
 void KbdParser::GamepadKeyDown(char key)
 {
+  // Prints the PS3 button pressed and updates gamepad accordingly
   switch(key)
   {
     case PS3_X:
     {
       Serial.println("PS3_X");
-      //Gamepad.press(2);
       Joystick->pressButton(PS3_XMap);
       break;
     }
     case PS3_Sqr:
     {
       Serial.println("PS3_Sqr");
-      //Gamepad.press(1);
       Joystick->pressButton(PS3_SqrMap);
       break;
     }
     case PS3_Tri:
     {
       Serial.println("PS3_Tri");
-      //Gamepad.press(4);
       Joystick->pressButton(PS3_TriMap);
       break;
     }
     case PS3_Cir:
     {
       Serial.println("PS3_Cir");
-      //Gamepad.press(3);
       Joystick->pressButton(PS3_CirMap);
       break;
     }
 
-    case PS3_DU:
+    case PS3_DUp:
     {
-      Serial.println("PS3_DU");
-      //Gamepad.dPad1(1);
+      Serial.println("PS3_DUp");
       Joystick->setHatSwitch(0,0);
       break;
     }
-    case PS3_DD:
+    case PS3_DDown:
     {
-      Serial.println("PS3_DD");
-      //Gamepad.dPad1(5);
+      Serial.println("PS3_DDown");
       Joystick->setHatSwitch(0,180);
       break;
     }
-    case PS3_DL:
+    case PS3_DLeft:
     {
-      Serial.println("PS3_DL");
-      //Gamepad.dPad1(7);
+      Serial.println("PS3_DLeft");
       Joystick->setHatSwitch(0,270);
       break;
     }
-    case PS3_DR:
+    case PS3_DRight:
     {
-      Serial.println("PS3_DR");
-      //Gamepad.dPad1(3);
+      Serial.println("PS3_DRight");
       Joystick->setHatSwitch(0,90);
       break;
     }
@@ -207,7 +207,6 @@ void KbdParser::GamepadKeyDown(char key)
     case PS3_LJoyU:
     {
       Serial.println("PS3_LJoyU");
-      //Gamepad.yAxis(-32700);
       Joystick->setYAxis(-127);
       joyLUp = true;
       break;
@@ -215,7 +214,6 @@ void KbdParser::GamepadKeyDown(char key)
     case PS3_LJoyD:
     {
       Serial.println("PS3_LJoyD");
-      //Gamepad.yAxis(32700);
       Joystick->setYAxis(127);
       joyLDown = true;
       break;
@@ -223,7 +221,6 @@ void KbdParser::GamepadKeyDown(char key)
     case PS3_LJoyL:
     {
       Serial.println("PS3_LJoyL");
-      //Gamepad.xAxis(-32700);
       Joystick->setXAxis(-127);
       joyLLeft = true;
       break;
@@ -231,7 +228,6 @@ void KbdParser::GamepadKeyDown(char key)
     case PS3_LJoyR:
     {
       Serial.println("PS3_LJoyR");
-      //Gamepad.xAxis(32700);
       Joystick->setXAxis(127);
       joyLRight = true;
       break;
@@ -239,14 +235,12 @@ void KbdParser::GamepadKeyDown(char key)
     case PS3_LJoyZ:
     {
       Serial.println("PS3_LJoyZ");
-      //Gamepad.press(11);
       Joystick->pressButton(PS3_LJoyZMap);
       break;
     }
     case PS3_RJoyZ:
     {
       Serial.println("PS3_RJoyZ");
-      //Gamepad.press(12);
       Joystick->pressButton(PS3_RJoyZMap);
       break;
     }
@@ -254,14 +248,12 @@ void KbdParser::GamepadKeyDown(char key)
     case PS3_L2:
     {
       Serial.println("PS3_L2");
-      //Gamepad.press(7);
       Joystick->pressButton(PS3_L2Map);
       break;
     }
     case PS3_R2:
     {
       Serial.println("PS3_R2");
-      //Gamepad.press(8);
       Joystick->pressButton(PS3_R2Map);
       break;
     }
@@ -269,81 +261,71 @@ void KbdParser::GamepadKeyDown(char key)
     case PS3_Start:
     {
       Serial.println("PS3_Start");
-      //Gamepad.press(10);
       Joystick->pressButton(PS3_StartMap);
       break;
     }
     case PS3_Sel:
     {
       Serial.println("PS3_Sel");
-      //Gamepad.press(9);
       Joystick->pressButton(PS3_SelMap);
       break;
     }
   }
-  //Gamepad.write();
   Joystick->sendState();
 }
 
 
 void KbdParser::GamepadKeyUp(char key)
 {
+  // Prints the PS3 button released and updates the gamepad accordingly
   switch(key)
   {
     case PS3_X:
     {
-      Serial.println("PS3_X Released");
-      //Gamepad.release(2);
+      Serial.println("PS3_X Released");;
       Joystick->releaseButton(PS3_XMap);
       break;
     }
     case PS3_Sqr:
     {
       Serial.println("PS3_Sqr Released");
-      //Gamepad.release(1);
       Joystick->releaseButton(PS3_SqrMap);
       break;
     }
     case PS3_Tri:
     {
       Serial.println("PS3_Tri Released");
-      //Gamepad.release(4);
       Joystick->releaseButton(PS3_TriMap);
       break;
     }
     case PS3_Cir:
     {
       Serial.println("PS3_Cir Released");
-      //Gamepad.release(3);
       Joystick->releaseButton(PS3_CirMap);
       break;
     }
 
-    case PS3_DU:
+    case PS3_DUp:
     {
-      Serial.println("PS3_DU Released");
-      //Gamepad.dPad1(0);
+      Serial.println("PS3_DUp Released");
       Joystick->setHatSwitch(0,-1);
       break;
     }
-    case PS3_DD:
+    case PS3_DDown:
     {
-      Serial.println("PS3_DD Released");
-      //Gamepad.dPad1(0);
+      Serial.println("PS3_DDown Released");
       Joystick->setHatSwitch(0,-1);
       break;
     }
-    case PS3_DL:
+    case PS3_DLeft:
     {
-      Serial.println("PS3_DL Released");
-      //Gamepad.dPad1(0);
+      Serial.println("PS3_DLeft Released");
       Joystick->setHatSwitch(0,-1);
       break;
     }
-    case PS3_DR:
+    case PS3_DRight:
     {
-      Serial.println("PS3_DR Released");
-      //Gamepad.dPad1(0);
+      Serial.println("PS3_DRight Released");
       Joystick->setHatSwitch(0,-1);
       break;
     }
@@ -353,7 +335,6 @@ void KbdParser::GamepadKeyUp(char key)
       Serial.println("PS3_LJoyU Released");
       if(!joyLDown)
       {
-        //Gamepad.yAxis(0);
         Joystick->setYAxis(0);
       }
       joyLUp = false;
@@ -364,7 +345,6 @@ void KbdParser::GamepadKeyUp(char key)
       Serial.println("PS3_LJoyD Released");
       if(!joyLUp)
       {
-        //Gamepad.yAxis(0);
         Joystick->setYAxis(0);
       }
       joyLDown = false;
@@ -375,7 +355,6 @@ void KbdParser::GamepadKeyUp(char key)
       Serial.println("PS3_LJoyL Released");
       if(!joyLRight)
       {
-        //Gamepad.xAxis(0);
         Joystick->setXAxis(0);
       }
       joyLLeft = false;
@@ -386,7 +365,6 @@ void KbdParser::GamepadKeyUp(char key)
       Serial.println("PS3_LJoyR Released");
       if(!joyLLeft)
       {
-        //Gamepad.xAxis(0);
         Joystick->setXAxis(0);
       }
       joyLRight = false;
@@ -395,14 +373,12 @@ void KbdParser::GamepadKeyUp(char key)
     case PS3_LJoyZ:
     {
       Serial.println("PS3_LJoyZ Released");
-      //Gamepad.release(11);
       Joystick->releaseButton(PS3_LJoyZMap);
       break;
     }
     case PS3_RJoyZ:
     {
       Serial.println("PS3_RJoyZ Released");
-      //Gamepad.release(12);
       Joystick->releaseButton(PS3_RJoyZMap);
       break;
     }
@@ -410,14 +386,12 @@ void KbdParser::GamepadKeyUp(char key)
     case PS3_L2:
     {
       Serial.println("PS3_L2 Released");
-      //Gamepad.release(7);
       Joystick->releaseButton(PS3_L2Map);
       break;
     }
     case PS3_R2:
     {
       Serial.println("PS3_R2 Released");
-      //Gamepad.release(8);
       Joystick->releaseButton(PS3_R2Map);
       break;
     }
@@ -425,18 +399,15 @@ void KbdParser::GamepadKeyUp(char key)
     case PS3_Start:
     {
       Serial.println("PS3_Start Released");
-      //Gamepad.release(10);
       Joystick->releaseButton(PS3_StartMap);
       break;
     }
     case PS3_Sel:
     {
       Serial.println("PS3_Sel");
-      //Gamepad.release(9);
       Joystick->releaseButton(PS3_SelMap);
       break;
     }
   }
-  //Gamepad.write();
   Joystick->sendState();
 }

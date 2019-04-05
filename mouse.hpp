@@ -27,16 +27,14 @@ class MouseParser : public MouseReportParser
     void OnMiddleButtonUp(MOUSEINFO *mi);
     void OnMiddleButtonDown(MOUSEINFO *mi);
 
-    void GamepadKeyDown(char key);
-    void GamepadKeyUp(char key);
-    void GamepadJoystick(int dX, int dY);
-    int MouseConvert(int d);
+    void GamepadKeyDown(char key);          // Updates the gamepad for mouse button press
+    void GamepadKeyUp(char key);            // Updates the gamepad for mouse button release
+    void GamepadJoystick(int dX, int dY);   // Updates the gamepad for mouse movement
+    int MouseConvert(int d);                // Converts the mouse movent into a fluid joystick value
 
-    unsigned long timeSinceUpdate;
+    // Used to give a small delay between mouse movement updates
+    unsigned long timeSinceUpdate;          
     bool Updated = false;
-    int count=0;
-    int* xVal[5];
-    int* yVal[5];
 
     Joystick_* Joystick;
 

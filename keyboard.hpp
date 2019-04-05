@@ -19,13 +19,12 @@ class KbdParser : public KeyboardReportParser
     void PrintKey(uint8_t mod, uint8_t key);
 
   protected:
-    void OnControlKeysChanged(uint8_t before, uint8_t after);
-    void OnKeyDown  (uint8_t mod, uint8_t key);
-    void OnKeyUp  (uint8_t mod, uint8_t key);
-    void OnKeyPressed(uint8_t key);
-
-    void GamepadKeyDown(char key);
-    void GamepadKeyUp(char key);
+    void OnControlKeysChanged(uint8_t before, uint8_t after); // Executes when a control key such as shift is pressed
+    void OnKeyDown  (uint8_t mod, uint8_t key);               // Executes when the keyboard key is pushed down
+    void OnKeyUp  (uint8_t mod, uint8_t key);                 // Executes when the keyboard key is released
+    void OnKeyPressed(uint8_t key);                           // Prints the key in ASCII
+    void GamepadKeyDown(char key);                            // Takes in a keyboard press and updates gamepad accordingly
+    void GamepadKeyUp(char key);                              // Takes in a keyboard release and updates gamepad accordingly
 
     // Bool values to not reset joystick if a key is still pressed
     // For left joystick
